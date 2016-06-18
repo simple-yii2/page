@@ -12,6 +12,7 @@
     ],
     "require": {
         "yiisoft/yii2": "*",
+        "simpleyiicms/translit": "dev-master",
         "asofter/yii2-imperavi-redactor": "*"
     },
     "autoload": {
