@@ -57,4 +57,19 @@ class Module extends \yii\base\Module {
 		];
 	}
 
+	/**
+	 * Making main menu item of module
+	 * @return array
+	 */
+	public function getMenuItem()
+	{
+		if (Yii::$app->user->can('page')) {
+			return [
+				['label' => Yii::t('page', 'Pages'), 'url' => ['/page/page/index']],
+			];
+		}
+		
+		return [];
+	}
+
 }
