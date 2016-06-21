@@ -5,6 +5,8 @@ namespace page\backend\models;
 use Yii;
 use yii\base\Model;
 
+use page\common\models\Page;
+
 /**
  * Page editting form
  */
@@ -88,6 +90,7 @@ class PageForm extends Model {
 		$this->item->setAttributes([
 			'title' => $this->title,
 			'active' => $this->active,
+			'modifyDate' => gmdate('Y-m-d H:i:s'),
 			'lead' => $this->lead,
 			'content' => $this->content,
 		], false);
@@ -113,6 +116,7 @@ class PageForm extends Model {
 		$this->item->setAttributes([
 			'title' => $this->title,
 			'active' => $this->active,
+			'modifyDate' => gmdate('Y-m-d H:i:s'),
 			'lead' => $this->lead,
 			'content' => $this->content,
 		], false);
