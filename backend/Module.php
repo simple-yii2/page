@@ -17,7 +17,7 @@ class Module extends \yii\base\Module {
 		parent::init();
 
 		$this->checkDatabase();
-		$this->addTranslation();
+		self::addTranslation();
 	}
 
 	/**
@@ -48,24 +48,29 @@ class Module extends \yii\base\Module {
 	 * Adding translation to i18n
 	 * @return void
 	 */
-	protected function addTranslation()
+	protected static function addTranslation()
 	{
-		Yii::$app->i18n->translations['page'] = [
-			'class'=>'yii\i18n\PhpMessageSource',
-			'sourceLanguage'=>'en-US',
-			'basePath'=>'@page/messages',
-		];
+		if (!isset(Yii::$app->i18n->translations['page'])) {
+			Yii::$app->i18n->translations['page'] = [
+				'class'=>'yii\i18n\PhpMessageSource',
+				'sourceLanguage'=>'en-US',
+				'basePath'=>'@page/messages',
+			];
+		}
 	}
 
 	/**
 	 * Making main menu item of module
+	 * @param string $base route base
 	 * @return array
 	 */
-	public function getMenuItem()
+	public static function getMenu($base)
 	{
+		self::addTranslation();
+
 		if (Yii::$app->user->can('page')) {
 			return [
-				['label' => Yii::t('page', 'Pages'), 'url' => ['/page/page/index']],
+				['label' => Yii::t('page', 'Pages'), 'url' => ["$base/page/page/index"]],
 			];
 		}
 		
