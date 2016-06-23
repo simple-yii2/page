@@ -68,7 +68,7 @@ class Module extends \yii\base\Module {
 	{
 		self::addTranslation();
 
-		if (Yii::$app->user->can('page')) {
+		if (Yii::$app->user->can('Page')) {
 			return [
 				['label' => Yii::t('page', 'Pages'), 'url' => ["$base/page/page/index"]],
 			];
