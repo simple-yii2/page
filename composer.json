@@ -13,6 +13,7 @@
     "require": {
         "yiisoft/yii2": "*",
         "simple-yii2/translit": "*",
+        "simple-yii2/filestorage": "*",
         "asofter/yii2-imperavi-redactor": "*"
     },
     "autoload": {
