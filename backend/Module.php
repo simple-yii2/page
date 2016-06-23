@@ -37,9 +37,9 @@ class Module extends \yii\base\Module {
 
 		//rbac
 		$auth = Yii::$app->getAuthManager();
-		if ($auth->getRole('page') === null) {
+		if ($auth->getRole('Page') === null) {
 			//page role
-			$page = $auth->createRole('page');
+			$page = $auth->createRole('Page');
 			$auth->add($page);
 		}
 	}

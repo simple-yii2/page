@@ -27,7 +27,7 @@ class PageController extends Controller
 			'access' => [
 				'class' => AccessControl::className(),
 				'rules' => [
-					['allow' => true, 'roles' => ['page']],
+					['allow' => true, 'roles' => ['Page']],
 				],
 			],
 		];
