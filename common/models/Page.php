@@ -67,6 +67,11 @@ class Page extends ActiveRecord {
 		return [];		
 	}
 
+	/**
+	 * Replacing files with new saved with storage
+	 * @param array $files Keys is old file name and value is new file name
+	 * @return void
+	 */
 	protected function setFiles($files)
 	{
 		$content = $this->content;
@@ -77,6 +82,10 @@ class Page extends ActiveRecord {
 		$this->content = $content;
 	}
 
+	/**
+	 * Updating files. Remove old and store new files.
+	 * @return void
+	 */
 	protected function storeFiles()
 	{
 		if (isset(Yii::$app->storage)) {
@@ -90,6 +99,10 @@ class Page extends ActiveRecord {
 		}
 	}
 
+	/**
+	 * Remove old files when object deletes
+	 * @return void
+	 */
 	protected function deleteFiles()
 	{
 		if (isset(Yii::$app->store)) {
@@ -99,6 +112,9 @@ class Page extends ActiveRecord {
 		}
 	}
 
+	/**
+	 * @inheritdoc
+	 */
 	public function beforeSave($insert)
 	{
 		if (parent::beforeSave($insert)) {
@@ -109,6 +125,9 @@ class Page extends ActiveRecord {
 		}
 	}
 
+	/**
+	 * @inheritdoc
+	 */
 	public function beforeDelete()
 	{
 		if (parent::beforeDelete()) {
