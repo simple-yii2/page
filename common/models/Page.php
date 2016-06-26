@@ -54,4 +54,69 @@ class Page extends ActiveRecord {
 		$this->alias = Translit::t($this->title . '-' . $this->id);
 	}
 
+	/**
+	 * Parsing html for files in <img> and <a>.
+	 * @param string $content 
+	 * @return string[]
+	 */
+	protected function getFilesFromContent($content)
+	{
+		if (preg_match_all('/(?:src|href)="([^"]+)"/i', $content, $matches))
+			return $matches[1];
+
+		return [];		
+	}
+
+	protected function setFiles($files)
+	{
+		$content = $this->content;
+		foreach ($files as $from => $to) {
+			$content = str_replace($from, $to, $content);
+		}
+
+		$this->content = $content;
+	}
+
+	protected function storeFiles()
+	{
+		if (isset(Yii::$app->storage)) {
+			if (($store = Yii::$app->storage) instanceof \storage\components\StorageInterface) {
+				$files = $store->update(
+					$this->getFilesFromContent($this->getOldAttribute('content')),
+					$this->getFilesFromContent($this->content)
+				);
+				$this->setFiles($files);
+			}
+		}
+	}
+
+	protected function deleteFiles()
+	{
+		if (isset(Yii::$app->store)) {
+			if (($store = Yii::$app->store) instanceof \storage\components\StorageInterface) {
+				$files = $store->update($this->getFilesFromContent($this->content), []);
+			}
+		}
+	}
+
+	public function beforeSave($insert)
+	{
+		if (parent::beforeSave($insert)) {
+			$this->storeFiles();
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public function beforeDelete()
+	{
+		if (parent::beforeDelete()) {
+			$this->deleteFiles();
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 }

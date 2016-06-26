@@ -4,21 +4,23 @@ namespace page\backend\controllers;
 
 use Yii;
 use yii\filters\AccessControl;
-use yii\web\Controller;
+use yii\helpers\Json;
 use yii\web\BadRequestHttpException;
+use yii\web\Controller;
+use yii\web\UnsupportedMediaTypeHttpException;
 
 use page\backend\models\PageForm;
 use page\backend\models\PageSearch;
 use page\common\models\Page;
 
 /**
- * Page manage controller
+ * Page manage controller.
  */
 class PageController extends Controller
 {
 
 	/**
-	 * Access control
+	 * Access control.
 	 * @return array
 	 */
 	public function behaviors()
@@ -33,8 +35,16 @@ class PageController extends Controller
 		];
 	}
 
+	public function beforeAction($action)
+	{
+		if ($action->id == 'image')
+			$this->enableCsrfValidation = false;
+
+		return parent::beforeAction($action);
+	}
+
 	/**
-	 * Page list
+	 * Page list.
 	 * @return void
 	 */
 	public function actionIndex()
@@ -48,7 +58,7 @@ class PageController extends Controller
 	}
 
 	/**
-	 * Page creating
+	 * Page creating.
 	 * @return void
 	 */
 	public function actionCreate()
@@ -66,8 +76,8 @@ class PageController extends Controller
 	}
 
 	/**
-	 * Page updating
-	 * @param integer $id Page id
+	 * Page updating.
+	 * @param integer $id Page id.
 	 * @return void
 	 */
 	public function actionUpdate($id)
@@ -89,8 +99,8 @@ class PageController extends Controller
 	}
 
 	/**
-	 * Page deleting
-	 * @param integer $id Page id
+	 * Page deleting.
+	 * @param integer $id Page id.
 	 * @return void
 	 */
 	public function actionDelete($id)
@@ -103,6 +113,28 @@ class PageController extends Controller
 			Yii::$app->session->setFlash('success', Yii::t('page', 'Page deleted successfully.'));
 
 		return $this->redirect(['index']);
+	}
+
+	/**
+	 * Uploading images.
+	 * @return void
+	 */
+	public function actionImage()
+	{
+		$name = Yii::$app->storage->prepare('file', [
+			'image/png',
+			'image/jpg',
+			'image/gif',
+			'image/jpeg',
+			'image/pjpeg',
+		]);
+
+		if ($name === false)
+			throw new BadRequestHttpException(Yii::t('page', 'Error occurred while image uploading.'));
+
+		return Json::encode([
+			['filelink' => $name],
+		]);
 	}
 
 }

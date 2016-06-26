@@ -66,6 +66,8 @@ class PageForm extends Model {
 	 */
 	public function init() {
 		parent::init();
+
+		$this->active = true;
 		
 		if ($this->item !== null) {
 			$this->setAttributes([
