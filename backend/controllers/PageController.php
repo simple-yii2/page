@@ -109,8 +109,11 @@ class PageController extends Controller
 		if ($item === null)
 			throw new BadRequestHttpException(Yii::t('page', 'Page not found.'));
 
-		if ($item->delete())
+		if ($item->delete()) {
+			Yii::$app->storage->removeObject($item);
+			
 			Yii::$app->session->setFlash('success', Yii::t('page', 'Page deleted successfully.'));
+		}
 
 		return $this->redirect(['index']);
 	}

@@ -6,11 +6,12 @@ use Yii;
 use yii\db\ActiveRecord;
 
 use helpers\Translit;
+use storage\components\StoredInterface;
 
 /**
  * Page acrive record
  */
-class Page extends ActiveRecord {
+class Page extends ActiveRecord implements StoredInterface {
 
 	/**
 	 * @inheritdoc
@@ -68,11 +69,25 @@ class Page extends ActiveRecord {
 	}
 
 	/**
-	 * Replacing files with new saved with storage
-	 * @param array $files Keys is old file name and value is new file name
-	 * @return void
+	 * @inheritdoc
 	 */
-	protected function setFiles($files)
+	public function getOldFiles()
+	{
+		return $this->getFilesFromContent($this->getOldAttribute('content'));
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getFiles()
+	{
+		return $this->getFilesFromContent($this->content);
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function setFiles($files)
 	{
 		$content = $this->content;
 		foreach ($files as $from => $to) {
@@ -80,62 +95,6 @@ class Page extends ActiveRecord {
 		}
 
 		$this->content = $content;
-	}
-
-	/**
-	 * Updating files. Remove old and store new files.
-	 * @return void
-	 */
-	protected function storeFiles()
-	{
-		if (isset(Yii::$app->storage)) {
-			if (($store = Yii::$app->storage) instanceof \storage\components\StorageInterface) {
-				$files = $store->update(
-					$this->getFilesFromContent($this->getOldAttribute('content')),
-					$this->getFilesFromContent($this->content)
-				);
-				$this->setFiles($files);
-			}
-		}
-	}
-
-	/**
-	 * Remove old files when object deletes
-	 * @return void
-	 */
-	protected function deleteFiles()
-	{
-		if (isset(Yii::$app->store)) {
-			if (($store = Yii::$app->store) instanceof \storage\components\StorageInterface) {
-				$files = $store->update($this->getFilesFromContent($this->content), []);
-			}
-		}
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function beforeSave($insert)
-	{
-		if (parent::beforeSave($insert)) {
-			$this->storeFiles();
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function beforeDelete()
-	{
-		if (parent::beforeDelete()) {
-			$this->deleteFiles();
-			return true;
-		} else {
-			return false;
-		}
 	}
 
 }

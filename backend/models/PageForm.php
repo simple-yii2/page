@@ -97,6 +97,8 @@ class PageForm extends Model {
 			'content' => $this->content,
 		], false);
 
+		Yii::$app->storage->storeObject($this->item);
+
 		$success = $this->item->save(false);
 
 		if ($success) {
@@ -122,6 +124,8 @@ class PageForm extends Model {
 			'lead' => $this->lead,
 			'content' => $this->content,
 		], false);
+
+		Yii::$app->storage->storeObject($this->item);
 
 		$success = $this->item->save(false);
 
