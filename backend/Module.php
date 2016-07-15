@@ -52,9 +52,9 @@ class Module extends \yii\base\Module {
 	{
 		if (!isset(Yii::$app->i18n->translations['page'])) {
 			Yii::$app->i18n->translations['page'] = [
-				'class'=>'yii\i18n\PhpMessageSource',
-				'sourceLanguage'=>'en-US',
-				'basePath'=>'@page/messages',
+				'class' => 'yii\i18n\PhpMessageSource',
+				'sourceLanguage' => 'en-US',
+				'basePath' => dirname(__DIR__) . '/messages',
 			];
 		}
 	}
