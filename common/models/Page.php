@@ -28,7 +28,6 @@ class Page extends ActiveRecord implements StoredInterface {
 			'alias' => Yii::t('page', 'Alias'),
 			'title' => Yii::t('page', 'Title'),
 			'active' => Yii::t('page', 'Active'),
-			'lead' => Yii::t('page', 'Lead text'),
 			'content' => Yii::t('page', 'Content'),
 		];
 	}

@@ -23,11 +23,6 @@ class PageForm extends Model {
 	public $active;
 
 	/**
-	 * @var string Lead text.
-	 */
-	public $lead;
-
-	/**
 	 * @var string Page content.
 	 */
 	public $content;
@@ -44,7 +39,6 @@ class PageForm extends Model {
 		return [
 			'title' => Yii::t('page', 'Title'),
 			'active' => Yii::t('page', 'Active'),
-			'lead' => Yii::t('page', 'Lead text'),
 			'content' => Yii::t('page', 'Content'),
 		];
 	}
@@ -56,7 +50,7 @@ class PageForm extends Model {
 		return [
 			['title', 'string', 'max' => 100],
 			['active', 'boolean'],
-			[['lead', 'content'], 'string'],
+			['content', 'string'],
 		];
 	}
 
@@ -73,7 +67,6 @@ class PageForm extends Model {
 			$this->setAttributes([
 				'title' => $this->item->title,
 				'active' => $this->item->active,
-				'lead' => $this->item->lead,
 				'content' => $this->item->content,
 			], false);
 		}
@@ -93,7 +86,6 @@ class PageForm extends Model {
 			'title' => $this->title,
 			'active' => $this->active,
 			'modifyDate' => gmdate('Y-m-d H:i:s'),
-			'lead' => $this->lead,
 			'content' => $this->content,
 		], false);
 
@@ -121,7 +113,6 @@ class PageForm extends Model {
 			'title' => $this->title,
 			'active' => $this->active,
 			'modifyDate' => gmdate('Y-m-d H:i:s'),
-			'lead' => $this->lead,
 			'content' => $this->content,
 		], false);
 

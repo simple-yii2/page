@@ -23,8 +23,6 @@ if (isset(Yii::$app->storage) && (Yii::$app->storage instanceof storage\componen
 
 	<?= $form->field($model, 'title') ?>
 
-	<?= $form->field($model, 'lead')->textarea(['rows' => 5]) ?>
-
 	<?= $form->field($model, 'content')->widget(\yii\imperavi\Widget::className(), [
 		'options' => $options,
 		'plugins' => [
@@ -35,7 +33,7 @@ if (isset(Yii::$app->storage) && (Yii::$app->storage instanceof storage\componen
 	<div class="form-group">
 		<div class="col-sm-offset-3 col-sm-6">
 			<?= Html::submitButton(Yii::t('page', 'Save'), ['class' => 'btn btn-primary']) ?>
-			<?= Html::a(Yii::t('page', 'Cancel'), ['index'], ['class' => 'btn btn-link']) ?>
+			<?= Html::a(Yii::t('page', 'Cancel'), ['index'], ['class' => 'btn btn-default']) ?>
 		</div>
 	</div>
 
