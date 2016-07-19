@@ -109,6 +109,9 @@ class PageForm extends Model {
 		if ($this->item === null)
 			return false;
 
+		if (!$this->validate())
+			return false;
+
 		$this->item->setAttributes([
 			'title' => $this->title,
 			'active' => $this->active,
