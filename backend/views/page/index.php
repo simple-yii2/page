@@ -29,9 +29,9 @@ $this->params['breadcrumbs'] = [
 	'columns' => [
 		'title',
 		[
-			'class'=>'yii\grid\ActionColumn',
-			'options'=>['style'=>'width: 50px;'],
-			'template'=>'{update} {delete}',
+			'class' => 'yii\grid\ActionColumn',
+			'options' => ['style' => 'width: 50px;'],
+			'template' => '{update} {delete}',
 		],
 	],
 ]) ?>

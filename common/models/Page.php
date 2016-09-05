@@ -9,9 +9,10 @@ use helpers\Translit;
 use storage\components\StoredInterface;
 
 /**
- * Page acrive record
+ * Page active record
  */
-class Page extends ActiveRecord implements StoredInterface {
+class Page extends ActiveRecord implements StoredInterface
+{
 
 	/**
 	 * @inheritdoc

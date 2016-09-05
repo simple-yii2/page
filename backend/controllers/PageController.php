@@ -35,6 +35,10 @@ class PageController extends Controller
 		];
 	}
 
+	/**
+	 * @inheritdoc
+	 * Disable csrf validation for image uploading
+	 */
 	public function beforeAction($action)
 	{
 		if ($action->id == 'image')
@@ -52,8 +56,8 @@ class PageController extends Controller
 		$model = new PageSearch;
 
 		return $this->render('index', [
-			'dataProvider'=>$model->search(Yii::$app->getRequest()->get()),
-			'model'=>$model,
+			'dataProvider' => $model->search(Yii::$app->getRequest()->get()),
+			'model' => $model,
 		]);
 	}
 

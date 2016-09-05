@@ -10,7 +10,8 @@ use page\common\models\Page;
 /**
  * Page search model
  */
-class PageSearch extends Page {
+class PageSearch extends Page
+{
 
 	/**
 	 * Search rules
@@ -32,11 +33,12 @@ class PageSearch extends Page {
 		$query = Page::find();
 
 		$dataProvider = new ActiveDataProvider([
-			'query'=>$query,
+			'query' => $query,
 		]);
 
 		//return data provider if no search
-		if (!($this->load($params) && $this->validate())) return $dataProvider;
+		if (!($this->load($params) && $this->validate()))
+			return $dataProvider;
 
 		//search
 		$query->andFilterWhere(['like', 'title', $this->title]);
