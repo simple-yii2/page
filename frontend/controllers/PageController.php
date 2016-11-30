@@ -2,6 +2,7 @@
 
 namespace page\frontend\controllers;
 
+use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
