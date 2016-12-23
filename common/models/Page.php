@@ -17,8 +17,16 @@ class Page extends ActiveRecord implements StoredInterface
 	/**
 	 * @inheritdoc
 	 */
-	public static function tableName() {
+	public static function tableName()
+	{
 		return 'Page';
+	}
+
+	public function init()
+	{
+		parent::init();
+
+		$this->active = true;
 	}
 
 	/**
@@ -26,7 +34,8 @@ class Page extends ActiveRecord implements StoredInterface
 	 * @param sring $alias Page alias or id.
 	 * @return Page
 	 */
-	public static function findByAlias($alias) {
+	public static function findByAlias($alias)
+	{
 		$model = static::findOne(['alias' => $alias]);
 		if ($model === null)
 			$model = static::findOne(['id' => $alias]);
