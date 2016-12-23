@@ -1,6 +1,6 @@
 <?php
 
-namespace page\common\models;
+namespace cms\page\common\models;
 
 use Yii;
 use yii\db\ActiveRecord;
@@ -19,18 +19,6 @@ class Page extends ActiveRecord implements StoredInterface
 	 */
 	public static function tableName() {
 		return 'Page';
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function attributeLabels() {
-		return [
-			'alias' => Yii::t('page', 'Alias'),
-			'title' => Yii::t('page', 'Title'),
-			'active' => Yii::t('page', 'Active'),
-			'content' => Yii::t('page', 'Content'),
-		];
 	}
 
 	/**

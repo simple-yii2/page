@@ -1,6 +1,6 @@
 <?php
 
-namespace page\frontend;
+namespace cms\page\frontend;
 
 /**
  * Page frontend module

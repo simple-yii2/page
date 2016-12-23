@@ -1,6 +1,6 @@
 <?php
 
-namespace page\backend;
+namespace cms\page\backend;
 
 use Yii;
 
@@ -38,9 +38,9 @@ class Module extends \yii\base\Module {
 		//rbac
 		$auth = Yii::$app->getAuthManager();
 		if ($auth->getRole('Page') === null) {
-			//page role
-			$page = $auth->createRole('Page');
-			$auth->add($page);
+			//role
+			$role = $auth->createRole('Page');
+			$auth->add($role);
 		}
 	}
 

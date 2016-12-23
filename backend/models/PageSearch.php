@@ -1,17 +1,26 @@
 <?php
 
-namespace page\backend\models;
+namespace cms\page\backend\models;
 
 use Yii;
 use yii\data\ActiveDataProvider;
 
-use page\common\models\Page;
+use cms\page\common\models\Page;
 
 /**
  * Page search model
  */
 class PageSearch extends Page
 {
+
+	/**
+	 * @inheritdoc
+	 */
+	public function attributeLabels() {
+		return [
+			'title' => Yii::t('page', 'Title'),
+		];
+	}
 
 	/**
 	 * Search rules
@@ -30,7 +39,7 @@ class PageSearch extends Page
 	 */
 	public function search($params) {
 		//ActiveQuery
-		$query = Page::find();
+		$query = static::find();
 
 		$dataProvider = new ActiveDataProvider([
 			'query' => $query,

@@ -1,6 +1,6 @@
 <?php
 
-namespace page\backend\controllers;
+namespace cms\page\backend\controllers;
 
 use Yii;
 use yii\filters\AccessControl;
@@ -9,9 +9,9 @@ use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\web\UnsupportedMediaTypeHttpException;
 
-use page\backend\models\PageForm;
-use page\backend\models\PageSearch;
-use page\common\models\Page;
+use cms\page\backend\models\PageForm;
+use cms\page\backend\models\PageSearch;
+use cms\page\common\models\Page;
 
 /**
  * Page manage controller.
@@ -20,8 +20,7 @@ class PageController extends Controller
 {
 
 	/**
-	 * Access control.
-	 * @return array
+	 * @inheritdoc
 	 */
 	public function behaviors()
 	{
@@ -48,8 +47,8 @@ class PageController extends Controller
 	}
 
 	/**
-	 * Page list.
-	 * @return void
+	 * List
+	 * @return string
 	 */
 	public function actionIndex()
 	{
@@ -62,14 +61,14 @@ class PageController extends Controller
 	}
 
 	/**
-	 * Page creating.
-	 * @return void
+	 * Create
+	 * @return string
 	 */
 	public function actionCreate()
 	{
-		$model = new PageForm;
+		$model = new PageForm(new Page);
 
-		if ($model->load(Yii::$app->getRequest()->post()) && $model->create()) {
+		if ($model->load(Yii::$app->getRequest()->post()) && $model->save()) {
 			Yii::$app->session->setFlash('success', Yii::t('page', 'Changes saved successfully.'));
 			return $this->redirect(['index']);
 		}
@@ -80,19 +79,19 @@ class PageController extends Controller
 	}
 
 	/**
-	 * Page updating.
+	 * Update
 	 * @param integer $id Page id.
-	 * @return void
+	 * @return string
 	 */
 	public function actionUpdate($id)
 	{
-		$item = Page::findOne($id);
-		if ($item === null)
+		$object = Page::findOne($id);
+		if ($object === null)
 			throw new BadRequestHttpException(Yii::t('page', 'Page not found.'));
 
-		$model = new PageForm(['item' => $item]);
+		$model = new PageForm($object);
 
-		if ($model->load(Yii::$app->getRequest()->post()) && $model->update()) {
+		if ($model->load(Yii::$app->getRequest()->post()) && $model->save()) {
 			Yii::$app->session->setFlash('success', Yii::t('page', 'Changes saved successfully.'));
 			return $this->redirect(['index']);
 		}
@@ -103,18 +102,18 @@ class PageController extends Controller
 	}
 
 	/**
-	 * Page deleting.
+	 * Delete
 	 * @param integer $id Page id.
-	 * @return void
+	 * @return string
 	 */
 	public function actionDelete($id)
 	{
-		$item = Page::findOne($id);
-		if ($item === null)
+		$object = Page::findOne($id);
+		if ($object === null)
 			throw new BadRequestHttpException(Yii::t('page', 'Page not found.'));
 
-		if ($item->delete()) {
-			Yii::$app->storage->removeObject($item);
+		if ($object->delete()) {
+			Yii::$app->storage->removeObject($object);
 			
 			Yii::$app->session->setFlash('success', Yii::t('page', 'Page deleted successfully.'));
 		}
@@ -123,8 +122,8 @@ class PageController extends Controller
 	}
 
 	/**
-	 * Uploading images.
-	 * @return void
+	 * Image upload
+	 * @return string
 	 */
 	public function actionImage()
 	{

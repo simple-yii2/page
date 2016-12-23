@@ -1,12 +1,12 @@
 <?php
 
-namespace page\frontend\controllers;
+namespace cms\page\frontend\controllers;
 
 use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
-use page\common\models\Page;
+use cms\page\common\models\Page;
 
 /**
  * Page frontend controller

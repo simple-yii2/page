@@ -1,11 +1,11 @@
 <?php
 
-namespace page\backend\models;
+namespace cms\page\backend\models;
 
 use Yii;
 use yii\base\Model;
 
-use page\common\models\Page;
+use cms\page\common\models\Page;
 
 /**
  * Page editting form
@@ -28,9 +28,28 @@ class PageForm extends Model {
 	public $content;
 
 	/**
-	 * @var page\common\models\Page Page model
+	 * @var cms\page\common\models\Page Page model
 	 */
-	public $item;
+	private $_object;
+
+	/**
+	 * @inheritdoc
+	 * @param cms\page\common\models\Page $object 
+	 */
+	public function __construct(\cms\page\common\models\Page $object, $config = [])
+	{
+		$this->_object = $object;
+
+		//attributes
+		$this->title = $object->title;
+		$this->active = $object->active == 0 ? '0' : '1';
+		$this->content = $object->content;
+
+		//file caching
+		Yii::$app->storage->cacheObject($object);
+
+		parent::__construct($config);
+	}
 
 	/**
 	 * @inheritdoc
@@ -55,75 +74,33 @@ class PageForm extends Model {
 	}
 
 	/**
-	 * @inheritdoc
-	 * Set default values
-	 */
-	public function init() {
-		parent::init();
-
-		$this->active = true;
-		
-		if ($this->item !== null) {
-			$this->setAttributes([
-				'title' => $this->item->title,
-				'active' => $this->item->active,
-				'content' => $this->item->content,
-			], false);
-		}
-	}
-
-	/**
-	 * Page creation
+	 * Save object using model attributes
 	 * @return boolean
 	 */
-	public function create() {
+	public function save()
+	{
 		if (!$this->validate())
 			return false;
 
-		$this->item = new Page;
+		$object = $this->_object;
+		$isNewRecord = $object->getIsNewRecord();
 
-		$this->item->setAttributes([
-			'title' => $this->title,
-			'active' => $this->active,
-			'modifyDate' => gmdate('Y-m-d H:i:s'),
-			'content' => $this->content,
-		], false);
+		$object->title = $this->title;
+		$object->active = $this->active == 1;
+		$object->content = $this->content;
+		$object->modifyDate = gmdate('Y-m-d H:i:s');
 
-		Yii::$app->storage->storeObject($this->item);
+		Yii::$app->storage->storeObject($object);
 
-		$success = $this->item->save(false);
+		if (!$object->save(false))
+			return false;
 
-		if ($success) {
-			$this->item->makeAlias();
-			$this->item->update(false, ['alias']);
+		if ($isNewRecord) {
+			$object->makeAlias();
+			$object->update(false, ['alias']);
 		}
 
-		return $success;
-	}
-
-	/**
-	 * Page updating
-	 * @return boolean
-	 */
-	public function update() {
-		if ($this->item === null)
-			return false;
-
-		if (!$this->validate())
-			return false;
-
-		$this->item->setAttributes([
-			'title' => $this->title,
-			'active' => $this->active,
-			'modifyDate' => gmdate('Y-m-d H:i:s'),
-			'content' => $this->content,
-		], false);
-
-		Yii::$app->storage->storeObject($this->item);
-
-		$success = $this->item->save(false);
-
-		return $success;
+		return true;
 	}
 
 }
