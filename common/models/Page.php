@@ -2,7 +2,6 @@
 
 namespace cms\page\common\models;
 
-use Yii;
 use yii\db\ActiveRecord;
 
 use helpers\Translit;
@@ -22,6 +21,9 @@ class Page extends ActiveRecord implements StoredInterface
 		return 'Page';
 	}
 
+	/**
+	 * @inheritdoc
+	 */
 	public function init()
 	{
 		parent::init();

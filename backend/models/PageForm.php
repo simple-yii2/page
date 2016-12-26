@@ -10,7 +10,8 @@ use cms\page\common\models\Page;
 /**
  * Page editting form
  */
-class PageForm extends Model {
+class PageForm extends Model
+{
 
 	/**
 	 * @var string Page title.

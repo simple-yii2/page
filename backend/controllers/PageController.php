@@ -7,7 +7,6 @@ use yii\filters\AccessControl;
 use yii\helpers\Json;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
-use yii\web\UnsupportedMediaTypeHttpException;
 
 use cms\page\backend\models\PageForm;
 use cms\page\backend\models\PageSearch;
