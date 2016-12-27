@@ -15,6 +15,11 @@ if (isset(Yii::$app->storage) && (Yii::$app->storage instanceof dkhlystov\storag
 ?>
 <?php $form = ActiveForm::begin([
 	'layout' => 'horizontal',
+	'fieldConfig' => [
+		'horizontalCssClasses' => [
+			'wrapper' => 'col-sm-9',
+		],
+	],
 	'enableClientValidation' => false,
 ]); ?>
 
