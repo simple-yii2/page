@@ -5,7 +5,7 @@ namespace cms\page\common\models;
 use yii\db\ActiveRecord;
 
 use helpers\Translit;
-use storage\components\StoredInterface;
+use dkhlystov\storage\components\StoredInterface;
 
 /**
  * Page active record

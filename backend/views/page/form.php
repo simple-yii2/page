@@ -8,7 +8,7 @@ $options = [
 	'minHeight' => 250,
 ];
 
-if (isset(Yii::$app->storage) && (Yii::$app->storage instanceof storage\components\StorageInterface)) {
+if (isset(Yii::$app->storage) && (Yii::$app->storage instanceof dkhlystov\storage\components\StorageInterface)) {
 	$options['imageUpload'] = Url::toRoute('image');
 }
 
@@ -16,7 +16,6 @@ if (isset(Yii::$app->storage) && (Yii::$app->storage instanceof storage\componen
 <?php $form = ActiveForm::begin([
 	'layout' => 'horizontal',
 	'enableClientValidation' => false,
-	'options' => ['class' => 'page-form'],
 ]); ?>
 
 	<?= $form->field($model, 'active')->checkbox() ?>
