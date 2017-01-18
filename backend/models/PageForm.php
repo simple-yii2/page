@@ -4,6 +4,7 @@ namespace cms\page\backend\models;
 
 use Yii;
 use yii\base\Model;
+use yii\helpers\HtmlPurifier;
 
 use cms\page\common\models\Page;
 
@@ -88,7 +89,7 @@ class PageForm extends Model
 
 		$object->title = $this->title;
 		$object->active = $this->active == 1;
-		$object->content = $this->content;
+		$object->content = HtmlPurifier::process($this->content);
 		$object->modifyDate = gmdate('Y-m-d H:i:s');
 
 		Yii::$app->storage->storeObject($object);
