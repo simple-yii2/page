@@ -57,7 +57,7 @@ class PageController extends Controller
 		return $this->render('index', [
 			'dataProvider' => $model->search(Yii::$app->getRequest()->get()),
 			'model' => $model,
-			'canAddPage' => Page::find()->count() < $this->module->maxCount,
+			'canAddPage' => $this->canAddPage(),
 		]);
 	}
 
@@ -67,7 +67,7 @@ class PageController extends Controller
 	 */
 	public function actionCreate()
 	{
-		if (Page::find()->count() >= $this->module->maxCount)
+		if (!$this->canAddPage())
 			throw new NotSupportedException('You have exceeded the maximum number of pages.');
 
 		$model = new PageForm(new Page);
@@ -145,6 +145,15 @@ class PageController extends Controller
 		return Json::encode([
 			['filelink' => $name],
 		]);
+	}
+
+	/**
+	 * Determining if there are a restrictions of adding page
+	 * @return boolean
+	 */
+	private function canAddPage()
+	{
+		return $this->module->maxCount === null || Page::find()->count() < $this->module->maxCount;
 	}
 
 }
