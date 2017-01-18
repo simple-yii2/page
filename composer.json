@@ -15,7 +15,7 @@
         "dkhlystov/yii2-storage": "*",
         "dkhlystov/yii2-translit": "*",
         "asofter/yii2-imperavi-redactor": "*",
-        "simple-yii2/cms": "*"
+        "simple-yii2/cms": "1.0.*"
     },
     "autoload": {
         "psr-4": {
