@@ -12,6 +12,11 @@ use cms\components\BackendModule;
 class Module extends BackendModule {
 
 	/**
+	 * @var integer|null max page count. If set to null, there are no limit to count of pages. 
+	 */
+	public $maxCount;
+
+	/**
 	 * @inheritdoc
 	 */
 	public static function moduleName()

@@ -3,6 +3,7 @@
 namespace cms\page\backend\controllers;
 
 use Yii;
+use yii\base\NotSupportedException;
 use yii\filters\AccessControl;
 use yii\helpers\Json;
 use yii\web\BadRequestHttpException;
@@ -13,7 +14,7 @@ use cms\page\backend\models\PageSearch;
 use cms\page\common\models\Page;
 
 /**
- * Page manage controller.
+ * Page manage controller
  */
 class PageController extends Controller
 {
@@ -56,6 +57,7 @@ class PageController extends Controller
 		return $this->render('index', [
 			'dataProvider' => $model->search(Yii::$app->getRequest()->get()),
 			'model' => $model,
+			'canAddPage' => Page::find()->count() < $this->module->maxCount,
 		]);
 	}
 
@@ -65,6 +67,9 @@ class PageController extends Controller
 	 */
 	public function actionCreate()
 	{
+		if (Page::find()->count() >= $this->module->maxCount)
+			throw new NotSupportedException('You have exceeded the maximum number of pages.');
+
 		$model = new PageForm(new Page);
 
 		if ($model->load(Yii::$app->getRequest()->post()) && $model->save()) {
