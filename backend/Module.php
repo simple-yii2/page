@@ -4,38 +4,26 @@ namespace cms\page\backend;
 
 use Yii;
 
+use cms\components\BackendModule;
+
 /**
  * Page backend module
  */
-class Module extends \yii\base\Module {
+class Module extends BackendModule {
 
 	/**
 	 * @inheritdoc
 	 */
-	public function init()
+	public static function moduleName()
 	{
-		parent::init();
-
-		$this->checkDatabase();
-		self::addTranslation();
+		return 'page';
 	}
 
 	/**
-	 * Database checking
-	 * @return void
+	 * @inheritdoc
 	 */
-	protected function checkDatabase()
+	public static function cmsSecurity()
 	{
-		//schema
-		$db = Yii::$app->db;
-		$filename = dirname(__DIR__) . '/schema/' . $db->driverName . '.sql';
-		$sql = explode(';', file_get_contents($filename));
-		foreach ($sql as $s) {
-			if (trim($s) !== '')
-				$db->createCommand($s)->execute();
-		}
-
-		//rbac
 		$auth = Yii::$app->getAuthManager();
 		if ($auth->getRole('Page') === null) {
 			//role
@@ -45,36 +33,16 @@ class Module extends \yii\base\Module {
 	}
 
 	/**
-	 * Adding translation to i18n
-	 * @return void
+	 * @inheritdoc
 	 */
-	protected static function addTranslation()
+	public static function cmsMenu($base)
 	{
-		if (!isset(Yii::$app->i18n->translations['page'])) {
-			Yii::$app->i18n->translations['page'] = [
-				'class' => 'yii\i18n\PhpMessageSource',
-				'sourceLanguage' => 'en-US',
-				'basePath' => dirname(__DIR__) . '/messages',
-			];
-		}
-	}
+		if (!Yii::$app->user->can('Page'))
+			return [];
 
-	/**
-	 * Making main menu item of module
-	 * @param string $base route base
-	 * @return array
-	 */
-	public static function getMenu($base)
-	{
-		self::addTranslation();
-
-		if (Yii::$app->user->can('Page')) {
-			return [
-				['label' => Yii::t('page', 'Pages'), 'url' => ["$base/page/page/index"]],
-			];
-		}
-		
-		return [];
+		return [
+			['label' => Yii::t('page', 'Pages'), 'url' => ["$base/page/page/index"]],
+		];
 	}
 
 }
