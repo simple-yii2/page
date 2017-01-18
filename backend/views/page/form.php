@@ -31,6 +31,7 @@ if (isset(Yii::$app->storage) && (Yii::$app->storage instanceof dkhlystov\storag
 		'options' => $options,
 		'plugins' => [
 			'fullscreen',
+			'video',
 		],
 	]) ?>
 

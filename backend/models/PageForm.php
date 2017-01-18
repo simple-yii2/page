@@ -89,7 +89,10 @@ class PageForm extends Model
 
 		$object->title = $this->title;
 		$object->active = $this->active == 1;
-		$object->content = HtmlPurifier::process($this->content);
+		$object->content = HtmlPurifier::process($this->content, [
+			'HTML.SafeIframe' => true,
+			'URI.SafeIframeRegexp' => '%^(?:http:)?//(?:www.youtube.com/embed/|player.vimeo.com/video/)%',
+		]);
 		$object->modifyDate = gmdate('Y-m-d H:i:s');
 
 		Yii::$app->storage->storeObject($object);
