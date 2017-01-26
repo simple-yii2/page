@@ -3,6 +3,7 @@
 namespace cms\page\common\models;
 
 use yii\db\ActiveRecord;
+use yii\helpers\Url;
 
 use helpers\Translit;
 use dkhlystov\storage\components\StoredInterface;
@@ -29,6 +30,19 @@ class Page extends ActiveRecord implements StoredInterface
 		parent::init();
 
 		$this->active = true;
+	}
+
+	public function behaviors()
+	{
+		return [
+			'sitemap' => [
+				'class' => 'cms\sitemap\common\behaviors\SitemapBehavior',
+				'loc' => function($model) {
+					return Url::toRoute(['/page/page/index', 'alias' => $model->alias]);
+				},
+				'active' => 'active',
+			],
+		];
 	}
 
 	/**
