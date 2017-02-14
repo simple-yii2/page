@@ -72,6 +72,7 @@ class PageForm extends Model
 			['title', 'string', 'max' => 100],
 			['active', 'boolean'],
 			['content', 'string'],
+			['title', 'required'],
 		];
 	}
 
