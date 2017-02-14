@@ -32,8 +32,19 @@ $this->params['breadcrumbs'] = [
 		'title',
 		[
 			'class' => 'yii\grid\ActionColumn',
-			'options' => ['style' => 'width: 50px;'],
-			'template' => '{update} {delete}',
+			'options' => ['style' => 'width: 75px;'],
+			'template' => '{link} {update} {delete}',
+			'buttons' => [
+				'link' => function($url, $model, $key) {
+					$title = Yii::t('page', 'Link');
+
+					return Html::a('<span class="glyphicon glyphicon-link"></span>', ['/page/page/index', 'alias' => $model->alias], [
+						'title' => $title,
+						'aria-label' => $title,
+						'data-pjax' => 0,
+					]);
+				},
+			],
 		],
 	],
 ]) ?>
