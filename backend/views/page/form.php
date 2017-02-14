@@ -6,6 +6,7 @@ use yii\helpers\Url;
 
 $options = [
 	'minHeight' => 250,
+	'toolbarFixedTopOffset' => 50,
 ];
 
 if (isset(Yii::$app->storage) && (Yii::$app->storage instanceof dkhlystov\storage\components\StorageInterface)) {
