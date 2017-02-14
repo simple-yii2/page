@@ -15,14 +15,19 @@ class PageForm extends Model
 {
 
 	/**
+	 * @var boolean Active.
+	 */
+	public $active;
+
+	/**
 	 * @var string Page title.
 	 */
 	public $title;
 
 	/**
-	 * @var boolean Active.
+	 * @var string Alias
 	 */
-	public $active;
+	public $alias;
 
 	/**
 	 * @var string Page content.
@@ -30,21 +35,22 @@ class PageForm extends Model
 	public $content;
 
 	/**
-	 * @var cms\page\common\models\Page Page model
+	 * @var Page Page model
 	 */
 	private $_object;
 
 	/**
 	 * @inheritdoc
-	 * @param cms\page\common\models\Page $object 
+	 * @param Page $object 
 	 */
-	public function __construct(\cms\page\common\models\Page $object, $config = [])
+	public function __construct(Page $object, $config = [])
 	{
 		$this->_object = $object;
 
 		//attributes
-		$this->title = $object->title;
 		$this->active = $object->active == 0 ? '0' : '1';
+		$this->title = $object->title;
+		$this->alias = $object->alias;
 		$this->content = $object->content;
 
 		//file caching
@@ -58,8 +64,9 @@ class PageForm extends Model
 	 */
 	public function attributeLabels() {
 		return [
-			'title' => Yii::t('page', 'Title'),
 			'active' => Yii::t('page', 'Active'),
+			'title' => Yii::t('page', 'Title'),
+			'alias' => Yii::t('page', 'Alias'),
 			'content' => Yii::t('page', 'Content'),
 		];
 	}
@@ -69,8 +76,9 @@ class PageForm extends Model
 	 */
 	public function rules() {
 		return [
-			['title', 'string', 'max' => 100],
 			['active', 'boolean'],
+			['title', 'string', 'max' => 100],
+			['alias', 'match', 'pattern' => '/^[a-z0-9\-_]*$/'],
 			['content', 'string'],
 			['title', 'required'],
 		];
@@ -86,10 +94,10 @@ class PageForm extends Model
 			return false;
 
 		$object = $this->_object;
-		$isNewRecord = $object->getIsNewRecord();
 
-		$object->title = $this->title;
 		$object->active = $this->active == 1;
+		$object->title = $this->title;
+		$object->alias = $this->alias;
 		$object->content = HtmlPurifier::process($this->content, [
 			'HTML.SafeIframe' => true,
 			'URI.SafeIframeRegexp' => '%^(?:http:)?//(?:www.youtube.com/embed/|player.vimeo.com/video/)%',
@@ -101,7 +109,7 @@ class PageForm extends Model
 		if (!$object->save(false))
 			return false;
 
-		if ($isNewRecord) {
+		if (empty($object->alias)) {
 			$object->makeAlias();
 			$object->update(false, ['alias']);
 		}

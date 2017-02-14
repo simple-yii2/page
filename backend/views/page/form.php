@@ -28,6 +28,8 @@ if (isset(Yii::$app->storage) && (Yii::$app->storage instanceof dkhlystov\storag
 
 	<?= $form->field($model, 'title') ?>
 
+	<?= $form->field($model, 'alias') ?>
+
 	<?= $form->field($model, 'content')->widget(\yii\imperavi\Widget::className(), [
 		'options' => $options,
 		'plugins' => [
