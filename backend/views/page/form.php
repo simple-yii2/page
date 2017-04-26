@@ -11,6 +11,7 @@ $options = [
 
 if (isset(Yii::$app->storage) && (Yii::$app->storage instanceof dkhlystov\storage\components\StorageInterface)) {
 	$options['imageUpload'] = Url::toRoute('image');
+	$options['fileUpload'] = Url::toRoute('file');
 }
 
 ?>

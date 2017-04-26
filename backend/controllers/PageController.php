@@ -36,11 +36,11 @@ class PageController extends Controller
 
 	/**
 	 * @inheritdoc
-	 * Disable csrf validation for image uploading
+	 * Disable csrf validation for image and file uploading
 	 */
 	public function beforeAction($action)
 	{
-		if ($action->id == 'image')
+		if ($action->id == 'image' || $action->id == 'file')
 			$this->enableCsrfValidation = false;
 
 		return parent::beforeAction($action);
@@ -141,6 +141,30 @@ class PageController extends Controller
 
 		if ($name === false)
 			throw new BadRequestHttpException(Yii::t('page', 'Error occurred while image uploading.'));
+
+		return Json::encode([
+			['filelink' => $name],
+		]);
+	}
+
+	/**
+	 * File upload
+	 * @return string
+	 */
+	public function actionFile()
+	{
+		$name = Yii::$app->storage->prepare('file', [
+			'image',
+			'application/zip',
+			'application/msword',
+			'application/vnd.ms-office',
+			'application/vnd.openxmlformats-officedocument',
+			'text/rtf',
+			'application/pdf',
+		]);
+
+		if ($name === false)
+			throw new BadRequestHttpException(Yii::t('page', 'Error occurred while file uploading.'));
 
 		return Json::encode([
 			['filelink' => $name],
