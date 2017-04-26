@@ -153,21 +153,13 @@ class PageController extends Controller
 	 */
 	public function actionFile()
 	{
-		$name = Yii::$app->storage->prepare('file', [
-			'image',
-			'application/zip',
-			'application/msword',
-			'application/vnd.ms-office',
-			'application/vnd.openxmlformats-officedocument',
-			'text/rtf',
-			'application/pdf',
-		]);
+		$name = Yii::$app->storage->prepare('file');
 
 		if ($name === false)
 			throw new BadRequestHttpException(Yii::t('page', 'Error occurred while file uploading.'));
 
 		return Json::encode([
-			['filelink' => $name],
+			['filelink' => $name, 'filename' => urldecode(basename($name))],
 		]);
 	}
 
