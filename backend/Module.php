@@ -40,7 +40,7 @@ class Module extends BackendModule {
 	/**
 	 * @inheritdoc
 	 */
-	public static function cmsMenu($base)
+	public function cmsMenu($base)
 	{
 		if (!Yii::$app->user->can('Page'))
 			return [];
