@@ -14,7 +14,7 @@
         "yiisoft/yii2": "*",
         "dkhlystov/yii2-storage": "*",
         "dkhlystov/yii2-translit": "*",
-        "asofter/yii2-imperavi-redactor": "*",
+        "vova07/yii2-imperavi-widget": "^2.0",
         "simple-yii2/cms": ">=1.0.0",
         "simple-yii2/sitemap": ">=1.0.0"
     },
