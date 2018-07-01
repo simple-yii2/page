@@ -1,4 +1,4 @@
-create table if not exists `Page`
+create table if not exists `page`
 (
 	`id` int(10) not null auto_increment,
 	`alias` varchar(100) default null,

@@ -19,7 +19,7 @@ class Page extends ActiveRecord implements StoredInterface
 	 */
 	public static function tableName()
 	{
-		return 'Page';
+		return 'page';
 	}
 
 	/**
