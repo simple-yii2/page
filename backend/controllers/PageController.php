@@ -19,157 +19,163 @@ use cms\page\common\models\Page;
 class PageController extends Controller
 {
 
-	/**
-	 * @inheritdoc
-	 */
-	public function behaviors()
-	{
-		return [
-			'access' => [
-				'class' => AccessControl::className(),
-				'rules' => [
-					['allow' => true, 'roles' => ['Page']],
-				],
-			],
-		];
-	}
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    ['allow' => true, 'roles' => ['Page']],
+                ],
+            ],
+        ];
+    }
 
-	/**
-	 * @inheritdoc
-	 * Disable csrf validation for image and file uploading
-	 */
-	public function beforeAction($action)
-	{
-		if ($action->id == 'image' || $action->id == 'file')
-			$this->enableCsrfValidation = false;
+    /**
+     * @inheritdoc
+     * Disable csrf validation for image and file uploading
+     */
+    public function beforeAction($action)
+    {
+        if ($action->id == 'image' || $action->id == 'file') {
+            $this->enableCsrfValidation = false;
+        }
 
-		return parent::beforeAction($action);
-	}
+        return parent::beforeAction($action);
+    }
 
-	/**
-	 * List
-	 * @return string
-	 */
-	public function actionIndex()
-	{
-		$model = new PageSearch;
+    /**
+     * List
+     * @return string
+     */
+    public function actionIndex()
+    {
+        $model = new PageSearch;
 
-		return $this->render('index', [
-			'dataProvider' => $model->search(Yii::$app->getRequest()->get()),
-			'model' => $model,
-			'canAddPage' => $this->canAddPage(),
-		]);
-	}
+        return $this->render('index', [
+            'dataProvider' => $model->search(Yii::$app->getRequest()->get()),
+            'model' => $model,
+            'canAddPage' => $this->canAddPage(),
+        ]);
+    }
 
-	/**
-	 * Create
-	 * @return string
-	 */
-	public function actionCreate()
-	{
-		if (!$this->canAddPage())
-			throw new NotSupportedException('You have exceeded the maximum number of pages.');
+    /**
+     * Create
+     * @return string
+     */
+    public function actionCreate()
+    {
+        if (!$this->canAddPage()) {
+            throw new NotSupportedException('You have exceeded the maximum number of pages.');
+        }
 
-		$model = new PageForm(new Page);
+        $model = new PageForm(new Page);
 
-		if ($model->load(Yii::$app->getRequest()->post()) && $model->save()) {
-			Yii::$app->session->setFlash('success', Yii::t('page', 'Changes saved successfully.'));
-			return $this->redirect(['index']);
-		}
+        if ($model->load(Yii::$app->getRequest()->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', Yii::t('page', 'Changes saved successfully.'));
+            return $this->redirect(['index']);
+        }
 
-		return $this->render('create', [
-			'model' => $model,
-		]);
-	}
+        return $this->render('create', [
+            'model' => $model,
+        ]);
+    }
 
-	/**
-	 * Update
-	 * @param integer $id Page id.
-	 * @return string
-	 */
-	public function actionUpdate($id)
-	{
-		$object = Page::findOne($id);
-		if ($object === null)
-			throw new BadRequestHttpException(Yii::t('page', 'Page not found.'));
+    /**
+     * Update
+     * @param integer $id Page id.
+     * @return string
+     */
+    public function actionUpdate($id)
+    {
+        $object = Page::findOne($id);
+        if ($object === null) {
+            throw new BadRequestHttpException(Yii::t('page', 'Page not found.'));
+        }
 
-		$model = new PageForm($object);
+        $model = new PageForm($object);
 
-		if ($model->load(Yii::$app->getRequest()->post()) && $model->save()) {
-			Yii::$app->session->setFlash('success', Yii::t('page', 'Changes saved successfully.'));
-			return $this->redirect(['index']);
-		}
+        if ($model->load(Yii::$app->getRequest()->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', Yii::t('page', 'Changes saved successfully.'));
+            return $this->redirect(['index']);
+        }
 
-		return $this->render('update', [
-			'model' => $model,
-		]);
-	}
+        return $this->render('update', [
+            'model' => $model,
+        ]);
+    }
 
-	/**
-	 * Delete
-	 * @param integer $id Page id.
-	 * @return string
-	 */
-	public function actionDelete($id)
-	{
-		$object = Page::findOne($id);
-		if ($object === null)
-			throw new BadRequestHttpException(Yii::t('page', 'Page not found.'));
+    /**
+     * Delete
+     * @param integer $id Page id.
+     * @return string
+     */
+    public function actionDelete($id)
+    {
+        $object = Page::findOne($id);
+        if ($object === null) {
+            throw new BadRequestHttpException(Yii::t('page', 'Page not found.'));
+        }
 
-		if ($object->delete()) {
-			Yii::$app->storage->removeObject($object);
-			
-			Yii::$app->session->setFlash('success', Yii::t('page', 'Page deleted successfully.'));
-		}
+        if ($object->delete()) {
+            Yii::$app->storage->removeObject($object);
+            
+            Yii::$app->session->setFlash('success', Yii::t('page', 'Page deleted successfully.'));
+        }
 
-		return $this->redirect(['index']);
-	}
+        return $this->redirect(['index']);
+    }
 
-	/**
-	 * Image upload
-	 * @return string
-	 */
-	public function actionImage()
-	{
-		$name = Yii::$app->storage->prepare('file', [
-			'image/png',
-			'image/jpg',
-			'image/gif',
-			'image/jpeg',
-			'image/pjpeg',
-		]);
+    /**
+     * Image upload
+     * @return string
+     */
+    public function actionImage()
+    {
+        $name = Yii::$app->storage->prepare('file', [
+            'image/png',
+            'image/jpg',
+            'image/gif',
+            'image/jpeg',
+            'image/pjpeg',
+        ]);
 
-		if ($name === false)
-			throw new BadRequestHttpException(Yii::t('page', 'Error occurred while image uploading.'));
+        if ($name === false) {
+            throw new BadRequestHttpException(Yii::t('cms', 'Error occurred while image uploading.'));
+        }
 
-		return Json::encode([
-			['filelink' => $name],
-		]);
-	}
+        return Json::encode([
+            ['filelink' => $name],
+        ]);
+    }
 
-	/**
-	 * File upload
-	 * @return string
-	 */
-	public function actionFile()
-	{
-		$name = Yii::$app->storage->prepare('file');
+    /**
+     * File upload
+     * @return string
+     */
+    public function actionFile()
+    {
+        $name = Yii::$app->storage->prepare('file');
 
-		if ($name === false)
-			throw new BadRequestHttpException(Yii::t('page', 'Error occurred while file uploading.'));
+        if ($name === false) {
+            throw new BadRequestHttpException(Yii::t('cms', 'Error occurred while file uploading.'));
+        }
 
-		return Json::encode([
-			['filelink' => $name, 'filename' => urldecode(basename($name))],
-		]);
-	}
+        return Json::encode([
+            ['filelink' => $name, 'filename' => urldecode(basename($name))],
+        ]);
+    }
 
-	/**
-	 * Determining if there are a restrictions of adding page
-	 * @return boolean
-	 */
-	private function canAddPage()
-	{
-		return $this->module->maxCount === null || Page::find()->count() < $this->module->maxCount;
-	}
+    /**
+     * Determining if there are a restrictions of adding page
+     * @return boolean
+     */
+    private function canAddPage()
+    {
+        return $this->module->maxCount === null || Page::find()->count() < $this->module->maxCount;
+    }
 
 }
