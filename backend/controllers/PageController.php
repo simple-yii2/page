@@ -8,8 +8,7 @@ use yii\filters\AccessControl;
 use yii\helpers\Json;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
-
-use cms\page\backend\models\PageForm;
+use cms\page\backend\forms\PageForm;
 use cms\page\backend\models\PageSearch;
 use cms\page\common\models\Page;
 
@@ -72,10 +71,10 @@ class PageController extends Controller
             throw new NotSupportedException('You have exceeded the maximum number of pages.');
         }
 
-        $model = new PageForm(new Page);
+        $model = new PageForm;
 
         if ($model->load(Yii::$app->getRequest()->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', Yii::t('page', 'Changes saved successfully.'));
+            Yii::$app->session->setFlash('success', Yii::t('cms', 'Changes saved successfully.'));
             return $this->redirect(['index']);
         }
 
@@ -93,13 +92,13 @@ class PageController extends Controller
     {
         $object = Page::findOne($id);
         if ($object === null) {
-            throw new BadRequestHttpException(Yii::t('page', 'Page not found.'));
+            throw new BadRequestHttpException(Yii::t('cms', 'Item not found.'));
         }
 
         $model = new PageForm($object);
 
         if ($model->load(Yii::$app->getRequest()->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', Yii::t('page', 'Changes saved successfully.'));
+            Yii::$app->session->setFlash('success', Yii::t('cms', 'Changes saved successfully.'));
             return $this->redirect(['index']);
         }
 
@@ -117,13 +116,12 @@ class PageController extends Controller
     {
         $object = Page::findOne($id);
         if ($object === null) {
-            throw new BadRequestHttpException(Yii::t('page', 'Page not found.'));
+            throw new BadRequestHttpException(Yii::t('cms', 'Item not found.'));
         }
 
         if ($object->delete()) {
             Yii::$app->storage->removeObject($object);
-            
-            Yii::$app->session->setFlash('success', Yii::t('page', 'Page deleted successfully.'));
+            Yii::$app->session->setFlash('success', Yii::t('cms', 'Item deleted successfully.'));
         }
 
         return $this->redirect(['index']);
