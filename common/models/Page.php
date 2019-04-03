@@ -5,7 +5,7 @@ namespace cms\page\common\models;
 use yii\db\ActiveRecord;
 use yii\helpers\Url;
 
-use helpers\Translit;
+use dkhlystov\helpers\Translit;
 use dkhlystov\storage\components\StoredInterface;
 
 /**
