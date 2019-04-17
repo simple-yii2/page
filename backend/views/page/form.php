@@ -7,6 +7,7 @@ use yii\helpers\Url;
 $settings = [
 	'minHeight' => 250,
 	'toolbarFixedTopOffset' => 50,
+	'replaceDivs' => false,
 	'plugins' => [
 		'fullscreen',
 		'video',
